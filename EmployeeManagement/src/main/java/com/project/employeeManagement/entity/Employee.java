@@ -19,8 +19,10 @@ public class Employee {
 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name="FULLNAME")
-	private String fullName;
+	@Column(name="FIRSTNAME")
+	private String firstName;
+	@Column(name="LASTNAME")
+	private String lastName;
 	@Column(name="EMAIL")
 	private String email;
 	@Column(name="PHONE")
@@ -32,9 +34,10 @@ public class Employee {
 	@Column(name="DOJ")
 	private String doj;
 
-	public Employee(String fullName, String email, String phone, String dob, String doj, String department) {
+	public Employee(String firstName, String lastName, String email, String phone, String dob, String doj, String department) {
 		super();
-		this.fullName = fullName;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.email = email;
 		this.phone = phone;
 		this.dob = dob;

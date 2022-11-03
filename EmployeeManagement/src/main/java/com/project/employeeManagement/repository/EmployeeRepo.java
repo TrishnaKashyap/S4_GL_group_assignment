@@ -9,5 +9,5 @@ import com.project.employeeManagement.entity.Employee;
 
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee, Integer> {
-	public List<Employee> findEmpByFullNameAndPhone(String fullName, String phone);
+	public List<Employee> findEmpByFirstName(String fullName);
 }
