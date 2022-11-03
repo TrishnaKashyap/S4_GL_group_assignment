@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Sort;
 import com.project.employeeManagement.entity.Employee;
 import com.project.employeeManagement.repository.EmployeeRepo;
 import com.project.employeeManagement.service.EmployeeService;
@@ -17,8 +18,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Override
 	public List<Employee> findAll() {
-		System.out.println("step 1");
-		return repo.findAll();
+		return repo.findAll(Sort.by(Sort.Direction.ASC, "firstName"));
 	}
 
 	@Override
@@ -35,11 +35,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	public void deleteById(int theId) {
 		repo.deleteById(theId);
-		
 	}
 
 	@Override
-	public List<Employee> findEmpByNameAndPhone(String fullName, String phone) {
-		return repo.findEmpByFullNameAndPhone(fullName, phone);
+	public List<Employee> findEmpByFirstName(String firstname) {
+		return repo.findEmpByFirstName(firstname);
 	}
 }

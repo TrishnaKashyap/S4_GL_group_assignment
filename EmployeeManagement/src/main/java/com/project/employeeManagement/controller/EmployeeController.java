@@ -1,6 +1,5 @@
 package com.project.employeeManagement.controller;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -11,18 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import com.project.employeeManagement.entity.Employee;
-import com.project.employeeManagement.repository.EmployeeRepo;
 import com.project.employeeManagement.service.EmployeeService;
-//import com.project.employeeManagement.serviceImpl.EmployeeServiceImpl;
-
 
 @Controller
 @RequestMapping("/directory")
 public class EmployeeController {
-	
+
 	@Autowired
 	EmployeeService service;
 
@@ -49,7 +43,7 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/save")
-	public String saveBook(@RequestParam("id") int id, @RequestParam("fullName") String fullName,
+	public String saveBook(@RequestParam("id") int id, @RequestParam("firstName") String firstName,@RequestParam("lastName") String lastName,
 			@RequestParam("email") String email, @RequestParam("phone") String phone,
 			@RequestParam("department") String department, @RequestParam("dob") String dob,
 			@RequestParam("doj") String doj) {
@@ -58,18 +52,17 @@ public class EmployeeController {
 		Employee emp;
 		if (id != 0) {
 			emp = service.findById(id);
-			emp.setFullName(fullName);
+			emp.setFirstName(firstName);
+			emp.setLastName(lastName);
 			emp.setEmail(email);
 			emp.setPhone(phone);
 			emp.setDepartment(department);
 			emp.setDob(dob);
 			emp.setDoj(doj);
 		} else
-			emp = new Employee(fullName, email, phone, department, dob, doj);
-		// save the Book
+			emp = new Employee(firstName, lastName, email, phone, department, dob, doj);
 		service.save(emp);
 
-		// use a redirect to prevent duplicate submissions
 		return "redirect:/directory/employees";
 
 	}
@@ -77,29 +70,22 @@ public class EmployeeController {
 	@GetMapping("/delete")
 	public String delete(@RequestParam("id") int id) {
 
-		// delete the Book
 		service.deleteById(id);
 
-		// redirect to /Books/list
 		return "redirect:/directory/employees";
 
 	}
 
 	@GetMapping("/search")
-	public String search(@RequestParam("fullName") String fullName, @RequestParam("phone") String phone , Map<String, List<Employee>> map) {
+	public String search(@RequestParam("firstName") String firstName, Model model) {
 
-		// check names, if both are empty then just give list of all Books
-
-		if (fullName.trim().isEmpty() && phone.trim().isEmpty()) {
+		if (firstName.trim().isEmpty()) {
 			return "redirect:/directory/employees";
 		} else {
-			// else, search by first name and last name
-			List<Employee> emp = service.findEmpByNameAndPhone(fullName, phone);
+			List<Employee> emp = service.findEmpByFirstName(firstName);
 
-			// add to the spring model
-			map.put("Employee", emp);
+			model.addAttribute("Employees", emp);
 
-			// send to list-Books
 			return "employees";
 		}
 
